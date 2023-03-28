@@ -1,0 +1,61 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Results{{ endblock }}
+
+{{ block content }}
+
+<p>
+    <b>Round {{ group.payoff_round }}</b> was randomly selected as payoff relevant. <br>
+    In this round, {{ if player.id_in_group == 2 }}you{{ else }}Player 2{{ endif }} could pick the following Option Z:
+</p>
+<ol>
+    <li>Option Z</li>
+    <ul>
+        <li>Player 1: &nbsp; {{ if group.misbehaved }}{{ group.self_z_mis }}{{ else }}{{ group.self_z_wel }}{{ endif }}</li>
+        <li>Player 2: &nbsp; {{ if group.misbehaved }}{{ group.other_z_mis }}{{ else }}{{ group.other_z_wel }}{{ endif }}</li>
+    </ul>
+</ol>
+<p>
+    or let {{ if player.id_in_group == 1 }}you{{ else }}Player 1{{ endif }} decide between the following two options:
+</p>
+<ol start="2">
+    <li>Option X</li>
+    <ul>
+        <li>Player 1: &nbsp; {{ group.self_x }}</li>
+        <li>Player 2: &nbsp; {{ group.other_x }}</li>
+    </ul>
+    <li>Option Y</li>
+    <ul>
+        <li>Player 1: &nbsp; {{ group.self_y }}</li>
+        <li>Player 2: &nbsp; {{ group.other_y }}</li>
+    </ul>
+</ol>
+<p>
+    {{ if player.id_in_group == 2 }}You{{ else }}Player 2{{ endif }} decided to 
+    {{ if group.trust }}
+        <b>let {{ if player.id_in_group == 1 }}you{{ else }}Player 1{{ endif }} choose between Option X and Option Y</b>. <br>
+        {{ if player.id_in_group == 1 }}You{{ else }}Player 1{{ endif }} decided to pick <b>Option {{ group.decision }}</b>. <br>
+    {{ else }}
+        <b>pick Option Z</b>. <br>
+    {{ endif }}
+    Therefore, you earn <b>{{ player.payoff_from_option }}</b>.
+</p>
+{{ if player.id_in_group == 2 }}
+<p>
+    You guessed that Player 1 would pick Option {{ group.belief_decision }}. <br>
+    {{ if not group.trust }}
+        Player 1 would have picked Option {{ group.decision }}. <br>
+    {{ endif }}
+    {{ if group.belief_decision == group.decision }}
+        Your guess was right and you earn a <b>bonus of {{ C.BONUS }}</b>. <br>
+    {{ else }}
+        Your guess was not right and you earn <b>no bonus</b>. <br>
+    {{ endif }}
+</p>
+<p>
+    Including your bonus, you earn <b>{{ player.payoff }} in total</b>.
+</p>
+{{ endif }}
+
+{{ next_button }}
+
+{{ endblock }}

@@ -1,0 +1,47 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Instructions{{ endblock }}
+
+{{ block content }}
+
+<p>
+    We will now give you detailed instructions. <b>Please read them carefully.</b> <br>
+    Afterward, you will have to answer comprehension questions. <br>
+    You can only continue to the experiment and earn money if you answer these questions correctly.
+</p>
+<p>
+    {{ if participant.treatment == "human" }}
+        In this study, you will be randomly and anonymously <b>paired with another participant</b>. <br>
+    {{ else }}
+        In this study, you will be <b>playing with a computer</b>. <br>
+    {{ endif }}
+    One of you will act in the role of Player 1 and the other in the role of Player 2. <br> 
+    Before you make any decisions you will be randomly assigned to a role and informed about the role.
+</p>
+<p>    
+    {{ if participant.treatment == "machine earns" }}
+        <b>The computer will keep the money it earns for itself.</b>
+    {{ elif participant.treatment == "burned" }}
+        <b>Nobody will receive the money that the computer earns.</b>
+    {{ elif participant.treatment == "token" }}
+        <b>Another participant will receive the money that the computer earns.</b>
+    {{ elif participant.treatment == "programmer" }}
+        <b>The programmer of the computer player will receive the money that the computer earns.</b>
+    {{ endif }}
+</p>
+<p>
+    Player 2 will repeatedly decide how to split a certain amount between him-/herself and Player 1. <br> 
+    Player 2 can directly choose a <b>certain allocation</b> of the amount (Option Z).
+</p>
+<p>
+    Alternatively, Player 2 can <b>delegate</b> the decision to Player 1. <br> 
+    In this case, Player 1 can choose between two options of how to allocate the amount (Option X and Option Y). <br>
+    Player 1 always sees Option X and Option Y as well as Option Z.
+</p>
+<p>
+    In total, Player 1 and Player 2 will make such decisions in {{ C.NUM_ROUNDS_MAIN }} rounds. <br>
+    In the end, one of these decisions will be selected at random and paid out.
+</p>
+
+{{ next_button }}
+
+{{ endblock }}

@@ -1,0 +1,27 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Comprehension Questions{{ endblock }}
+
+{{ block content }}
+
+{{ if player.tries_left > 0 }}
+
+<p>
+    Please answer the following comprehension questions. <br>
+    You must answer all questions correctly before you can continue with the experiment. <br>
+    You have <b>{{ player.tries_left }} out of {{ C.NUM_TRIES }} attempts left</b> to answer the following questions correctly.
+</p>
+
+{{ formfields }}
+
+{{ else }}
+
+<p>
+    You have used up your {{ C.NUM_TRIES }} attempts and can no longer continue with the experiment. <br>
+    <b>Please return your submission on Prolific.</b>
+</p>
+
+{{ endif }}
+
+{{ next_button }}
+
+{{ endblock }}

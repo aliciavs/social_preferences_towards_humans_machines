@@ -1,0 +1,143 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}<div class="gray-box"><div class="blue-box" style="width: {{ progress }}%;"></div></div><br> Your Choice - Round {{ player.round_number }} of {{ C.NUM_ROUNDS }}{{ endblock }}
+
+{{ block content }}
+
+<p>
+    You are <b>Player 1</b>. <br>
+    {{ if participant.treatment == "human" }}
+        Player 2 is <b>another participant of this study</b>. <br>
+    {{ else }}
+        Player 2 is <b>a computer</b>. <br>
+    {{ endif }}
+    Please make your choice between the following two options.
+</p>
+<p>    
+    {{ if participant.treatment == "machine earns" }}
+        Remember: The computer will keep the money it earns for itself. <br><br>
+    {{ elif participant.treatment == "burned" }}
+        Remember: Nobody will receive the money that the computer earns. <br><br>
+    {{ elif participant.treatment == "no info" }}
+        &nbsp;
+    {{ elif participant.treatment == "token" }}
+        Remember: Another participant will receive the money that the computer earns. <br><br>
+    {{ elif participant.treatment == "programmer" }}
+        Remember: The programmer of the computer player will receive the money that the computer earns. <br><br>
+    {{ endif }}
+</p>
+
+<table>
+    <tr>
+        <td>
+            <button type="button" id="OptionX" class="btn btn-primary btn-large option-button" onclick="FunctionX();appear();">
+                <b>Option X</b> <br>
+                <table style="text-align: left; padding: 3px; 3px;">
+                    <tr>
+                        <td>Player 1 (You): &nbsp;</td>
+                        <td>{{ subsession.self_x }}</td>
+                    </tr>
+                    <tr>
+                        <td>Player 2:</td>
+                        <td>{{ subsession.other_x }}</td>
+                    </tr>
+                </table>
+            </button>
+        </td>
+        <td>
+            <button type="button" id="OptionY" class="btn btn-primary btn-large option-button" onclick="FunctionY();appear();">
+                <b>Option Y</b> <br>
+                <table style="text-align: left; padding: 3px; 3px;">
+                    <tr>
+                        <td>Player 1 (You): &nbsp;</td>
+                        <td>{{ subsession.self_y }}</td>
+                    </tr>
+                    <tr>
+                        <td>Player 2:</td>
+                        <td>{{ subsession.other_y }}</td>
+                    </tr>
+                </table>
+            </button>
+        </td>
+    </tr>
+</table>
+
+<table style="margin-left:80pt">
+    <tr>
+        <td><u>Your Choice</u></td>
+        <td></td>
+        <td style="padding: 10pt">&nbsp;</td>
+    </tr>
+    <tr>
+        <td>Option:</td>
+        <td></td>
+        <td style="font-weight: bold"><span id="OptionChoice"></span></td>
+    </tr>
+    <tr>
+        <td>Payoff for Player 1 (You):</td>
+        <td>&nbsp;&nbsp;</td>
+        <td style="font-weight: bold"><span id="PayoffA"></span></td>
+    </tr>
+    <tr>
+        <td>Payoff for Player 2:</td>
+        <td>&nbsp;&nbsp;</td>
+        <td style="font-weight: bold"><span id="PayoffB"></span></td>
+    </tr>
+</table>
+
+<br><br>
+
+<div id="NextButton" style="display: none">
+    {% next_button %}
+</div>
+
+<input type="hidden" name="decision" id="DecisionField">
+
+<style>
+    .option-button{
+        background-color: #e7e7e7;
+        color: black;
+        border: none;
+    }
+    .option-selected:not(:hover) {
+        color: #fff;
+        background-color: #0b5ed7;
+    }
+    .otree-timer {
+        display: none;
+    }
+</style>
+
+{{ endblock }}
+
+{{ block scripts }}
+<script>
+let self_x = js_vars.self_x;
+let self_y = js_vars.self_y;
+let other_x = js_vars.other_x
+let other_y = js_vars.other_y
+
+function appear() {
+  setTimeout(function(){
+    document.getElementById("NextButton").style.display = "block";
+  }, 3000);
+}
+
+function FunctionX() {
+  document.getElementById("DecisionField").value = "X";
+  document.getElementById("OptionChoice").textContent = "X";
+  document.getElementById("PayoffA").textContent = self_x + " points";
+  document.getElementById("PayoffB").textContent = other_x + " points";
+  document.getElementById("OptionX").classList.add("option-selected");
+  document.getElementById("OptionY").classList.remove("option-selected");
+}
+
+function FunctionY() {
+  document.getElementById("DecisionField").value = "Y";
+  document.getElementById("OptionChoice").textContent = "Y";
+  document.getElementById("PayoffA").textContent = self_y + " points";
+  document.getElementById("PayoffB").textContent = other_y + " points";
+  document.getElementById("OptionX").classList.remove("option-selected");
+  document.getElementById("OptionY").classList.add("option-selected");
+}
+</script>
+{{ endblock }}

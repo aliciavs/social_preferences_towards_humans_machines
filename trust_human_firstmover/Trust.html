@@ -1,0 +1,202 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}<div class="gray-box"><div class="blue-box" style="width: {{ progress }}%;"></div></div><br> Your Decision - Round {{ player.round_number }} of {{ C.NUM_ROUNDS }}{{ endblock }}
+
+{{ block content }}
+
+<p>
+    You are <b>Player 2</b>. <br>
+    Player 1 is <b>another participant of this study</b>. <br>
+    Please specify whether you want to pick Option Z. <br> 
+    If you do not pick Option Z, Player 1 will decide between Option X and Option Y. <br><br>
+</p>
+
+<table style="text-align: center;">
+    <tr>
+        <td>
+            <button type="button" id="ButtonNotTrust" class="btn btn-primary btn-large option-button" onclick="NotTrust();appear();">
+                <b>Option Z</b> <br>
+                <table style="text-align: left; padding: 3px; 3px;">
+                    <tr>
+                        <td>Player 1:</td>
+                        <td>{{ self_z }}</td>
+                    </tr>
+                    <tr>
+                        <td>Player 2 (You):</td>
+                        <td>{{ other_z }}</td>
+                    </tr>
+                </table>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button type="button" id="ButtonTrust" class="btn btn-primary btn-large option-button" onclick="Trust();appear();">
+                Let Player 1 decide between Option X and Option Y:
+                <table style="text-align: left; padding: 3px; 3px;">
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <b>Option X</b>
+                        </td>
+                        <td>&nbsp;&nbsp;&nbsp;</td>
+                        <td colspan="2" style="text-align: center;">
+                            <b>Option Y</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Player 1:</td>
+                        <td>{{ subsession.self_x }}</td>
+                        <td></td>
+                        <td>Player 1:</td>
+                        <td>{{ subsession.self_y }}</td>
+                    </tr>
+                    <tr>
+                        <td>Player 2 (You):</td>
+                        <td>{{ subsession.other_x }}</td>
+                        <td></td>
+                        <td>Player 2 (You):</td>
+                        <td>{{ subsession.other_y }}</td>
+                    </tr>
+                </table>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">Your Choice:</td>
+    </tr>
+    <tr>
+        <td colspan="4" id="Trust">&nbsp;</td>
+    </tr>
+</table>
+
+<br><br>
+
+<p>
+    Which of the two options do you think Player 1 would choose? <br>
+    With a correct answer, you can earn a bonus of {{ C.BONUS }}.
+</p>
+
+<table style="text-align: center;">
+    <tr>
+        <td>
+            <button type="button" id="ButtonBeliefX" class="btn btn-primary btn-large option-button" onclick="BeliefX();appear();">
+                <b>Option X</b> <br>
+                <table style="text-align: left; padding: 3px; 3px;">
+                    <tr>
+                        <td>Player 1: &nbsp;</td>
+                        <td>{{ subsession.self_x }}</td>
+                    </tr>
+                    <tr>
+                        <td>Player 2 (You):</td>
+                        <td>{{ subsession.other_x }}</td>
+                    </tr>
+                </table>
+            </button>
+        </td>
+        <td>
+            <button type="button" id="ButtonBeliefY" class="btn btn-primary btn-large option-button" onclick="BeliefY();appear();">
+                <b>Option Y</b> <br>
+                <table style="text-align: left; padding: 3px; 3px;">
+                    <tr>
+                        <td>Player 1: &nbsp;</td>
+                        <td>{{ subsession.self_y }}</td>
+                    </tr>
+                    <tr>
+                        <td>Player 2 (You):</td>
+                        <td>{{ subsession.other_y }}</td>
+                    </tr>
+                </table>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">Your Assessment:</td>
+    </tr>
+    <tr>
+        <td colspan="2" id="Belief"></td>
+    </tr>
+</table>
+
+<br><br>
+
+<div id="NextButton" style="display: none">
+    {% next_button %}
+</div>
+
+<input type="hidden" name="trust" id="TrustField">
+<input type="hidden" name="belief_decision" id="BeliefField">
+
+<style>
+    .option-button{
+        background-color: #e7e7e7;
+        color: black;
+        border: none;
+    }
+    .option-button:disabled{
+        background-color: #e7e7e7;
+        color: black;
+        border: none;
+        opacity: 1;
+    }
+    .option-selected:not(:hover) {
+        color: #fff;
+        background-color: #0b5ed7;
+    }
+    .otree-timer {
+        display: none;
+    }
+    td {
+        padding: 8px 5px;
+    }
+    .add-padding {
+        padding-right: 100px;
+    }
+</style>
+
+{{ endblock }}
+
+{{ block scripts }}
+<script>
+let decidedTrust = false;
+let decidedBelief = false;
+
+function appear() {
+  if (decidedTrust == true && decidedBelief == true) {
+    setTimeout(function(){
+      document.getElementById("NextButton").style.display = "block";
+    }, 3000);
+  }
+}
+
+function Trust() {
+  document.getElementById("TrustField").value = 1;
+  document.getElementById("Trust").innerHTML = "<b>Let Player 1 decide between Option X and Option Y.</b>";
+  document.getElementById("ButtonTrust").classList.add("option-selected");
+  document.getElementById("ButtonNotTrust").classList.remove("option-selected");
+  decidedTrust = true;
+}
+
+function NotTrust() {
+  document.getElementById("TrustField").value = 0;
+  document.getElementById("Trust").innerHTML = "<b>Pick Option Z.</b>";
+  document.getElementById("ButtonTrust").classList.remove("option-selected");
+  document.getElementById("ButtonNotTrust").classList.add("option-selected");
+  decidedTrust = true;
+}
+
+function BeliefX() {
+  document.getElementById("BeliefField").value = "X";
+  document.getElementById("Belief").innerHTML = "<b>Option X</b>";
+  document.getElementById("ButtonBeliefX").classList.add("option-selected");
+  document.getElementById("ButtonBeliefY").classList.remove("option-selected");
+  decidedBelief = true;
+}
+
+function BeliefY() {
+  document.getElementById("BeliefField").value = "Y";
+  document.getElementById("Belief").innerHTML = "<b>Option Y</b>";
+  document.getElementById("ButtonBeliefX").classList.remove("option-selected");
+  document.getElementById("ButtonBeliefY").classList.add("option-selected");
+  decidedBelief = true;
+}
+</script>
+{{ endblock }}

@@ -1,0 +1,45 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Results{{ endblock }}
+
+{{ block content }}
+
+<p>
+    <b>Round {{ player.payoff_round }}</b> was randomly selected as payoff relevant. <br>
+    In this round, Player 2 (the computer) could pick the following Option Z:
+</p>
+<ol>
+    <li>Option Z</li>
+    <ul>
+        <li>Player 1: &nbsp; {{ if misbehaved }}{{ self_z_mis }}{{ else }}{{ self_z_wel }}{{ endif }}</li>
+        <li>Player 2: &nbsp; {{ if misbehaved }}{{ other_z_mis }}{{ else }}{{ other_z_wel }}{{ endif }}</li>
+    </ul>
+</ol>
+<p>
+    or let you decide between the following two options:
+</p>
+<ol start="2">
+    <li>Option X</li>
+    <ul>
+        <li>Player 1: &nbsp; {{ self_x }}</li>
+        <li>Player 2: &nbsp; {{ other_x }}</li>
+    </ul>
+    <li>Option Y</li>
+    <ul>
+        <li>Player 1: &nbsp; {{ self_y }}</li>
+        <li>Player 2: &nbsp; {{ other_y }}</li>
+    </ul>
+</ol>
+<p>
+    Player 2 (the computer) decided to 
+    {{ if trust }}
+        <b>let you choose between Option X and Option Y</b>. <br>
+        You decided to pick <b>Option {{ decision }}</b>. <br>
+    {{ else }}
+        <b>pick Option Z</b>. <br>
+    {{ endif }}
+    Therefore, you earn <b>{{ player.payoff }}</b>.
+</p>
+
+{{ next_button }}
+
+{{ endblock }}

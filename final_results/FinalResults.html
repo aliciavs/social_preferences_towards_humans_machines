@@ -1,0 +1,14 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Final Results{{ endblock }}
+
+{{ block content }}
+
+<p>
+    In total, you earned <b>{{ participant.payoff }}</b> in this experiment. <br>
+    Including your base pay of {{ participation_fee }}, this corresponds to <b>{{ final_payoff }}</b>. <br>
+    We will pay out this amount as soon as possible.
+</p>
+
+{{ next_button }}
+
+{{ endblock }}

@@ -1,0 +1,29 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Results{{ endblock }}
+
+{{ block content }}
+
+<p>
+    <b>Round {{ player.payoff_round }}</b> was randomly selected as payoff relevant. <br>
+    In this round, you could decide between the following two options:
+</p>
+<ol>
+    <li>Option X</li>
+    <ul>
+        <li>Player 1: &nbsp; {{ self_x }}</li>
+        <li>Player 2: &nbsp; {{ other_x }}</li>
+    </ul>
+    <li>Option Y</li>
+    <ul>
+        <li>Player 1: &nbsp; {{ self_y }}</li>
+        <li>Player 2: &nbsp; {{ other_y }}</li>
+    </ul>
+</ol>
+<p>
+    You decided to pick <b>Option {{ decision }}</b>.<br>
+    Therefore, you earn {{ player.payoff }}.
+</p>
+
+{{ next_button }}
+
+{{ endblock }}
